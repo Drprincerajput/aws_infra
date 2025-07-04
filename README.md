@@ -20,19 +20,59 @@ This project provisions a fully functional cloud environment on AWS using Infras
 
 🧱 Architecture
 
-<pre> <code> +-------------+ +-----------------+ | GitHub Repo | <---> | GitHub Actions | +------+------+\ +--------+--------+ | | v v terraform init/plan/apply terraform destroy (manual) | | v v AWS Infra Clean teardown (via Terraform) (via GitHub Actions) | v +-------------+ | VPC + ALB | | EC2 (x2) | +-------------+ | v Ansible connects via SSH Installs Nginx + deploys HTML </code> </pre>
+```
++-------------+      +-----------------+
+| GitHub Repo | <--> | GitHub Actions  |
++------+------+      +--------+--------+
+       |                     |
+       v                     v
+terraform init/plan/apply    terraform destroy (manual)
+       |                     |
+       v                     v
+    AWS Infra         Clean teardown (via Terraform)
+       |                     |
+       v                     v
++-------------+      +-------------+
+| VPC + ALB   |      | EC2 (x2)    |
++-------------+      +-------------+
+       |
+       v
+Ansible connects via SSH
+Installs Nginx + deploys HTML
+```
 
 🛠️ Tools Used
-Tool Purpose
-Terraform Infrastructure provisioning (IaC)
-Ansible Remote configuration of EC2 (Nginx)
-GitHub Actions CI/CD pipelines for deploy/destroy
-AWS EC2 Hosts web servers
-AWS ALB Load balances traffic across EC2s
-AWS VPC Isolated networking with public subnets
+
+| Tool         | Purpose                                 |
+|--------------|-----------------------------------------|
+| Terraform    | Infrastructure provisioning (IaC)       |
+| Ansible      | Remote configuration of EC2 (Nginx)     |
+| GitHub Actions | CI/CD pipelines for deploy/destroy    |
+| AWS EC2      | Hosts web servers                       |
+| AWS ALB      | Load balances traffic across EC2s       |
+| AWS VPC      | Isolated networking with public subnets |
+
 📁 Project Structure
 
-<pre>``` <code> aws-infra/ ├── .github/ │ └── workflows/ │ ├── deploy.yml # CI/CD pipeline on push │ └── destroy.yml # Manual destroy workflow ├── modules/ # Reusable Terraform modules │ ├── vpc/ │ ├── ec2/ │ └── alb/ ├── ansible/ │ ├── inventory.ini │ └── nginx_setup.yml # Installs Nginx + HTML page ├── main.tf # Terraform root config ├── variables.tf ├── outputs.tf ├── backend.tf └── .gitignore </code> ```</pre>
+```
+aws-infra/
+├── .github/
+│   └── workflows/
+│       ├── deploy.yml      # CI/CD pipeline on push
+│       └── destroy.yml     # Manual destroy workflow
+├── modules/                # Reusable Terraform modules
+│   ├── vpc/
+│   ├── ec2/
+│   └── alb/
+├── ansible/
+│   ├── inventory.ini
+│   └── nginx_setup.yml     # Installs Nginx + HTML page
+├── main.tf                 # Terraform root config
+├── variables.tf
+├── outputs.tf
+├── backend.tf
+└── .gitignore
+```
 
 🧪 How to Use
 ✅ Deploy Infra (Auto-Triggered)
