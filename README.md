@@ -1,7 +1,7 @@
 # AWS Infra Automation with Terraform, Ansible & GitHub Actions
 
     End-to-end infrastructure deployment using Terraform modules, Ansible for configuration, and GitHub Actions CI/CD — all built from scratch and production-style.
-    
+
 🚀 Project Overview
 
 This project provisions a fully functional cloud environment on AWS using Infrastructure as Code (IaC) tools. It includes:
@@ -20,27 +20,27 @@ This project provisions a fully functional cloud environment on AWS using Infras
 
 🧱 Architecture
 
-+-------------+         +-----------------+
-| GitHub Repo | <-----> | GitHub Actions  |
-+------+------+         +--------+--------+
-       |                         |
-       v                         v
- terraform init/plan/apply   terraform destroy (manual)
-       |                         |
-       v                         v
-    AWS Infra             Clean teardown via
-                          GitHub Actions + Terraform
-       |
-       v
++-------------+ +-----------------+
+| GitHub Repo | <-----> | GitHub Actions |
++------+------+ +--------+--------+
+| |
+v v
+terraform init/plan/apply terraform destroy (manual)
+| |
+v v
+AWS Infra Clean teardown via
+GitHub Actions + Terraform
+|
+v
 +------------------+
-|  VPC + ALB + EC2 |
-|  (2 instances)   |
+| VPC + ALB + EC2 |
+| (2 instances) |
 +------------------+
-       |
-       v
+|
+v
 Ansible connects via SSH  
 → Installs Nginx  
-→ Deploys HTML page  
+→ Deploys HTML page
 
 🛠️ Tools Used
 Tool Purpose
@@ -53,16 +53,16 @@ AWS VPC Isolated networking with public subnets
 📁 Project Structure
 
 aws-infra/
-├── .github/workflows/       # CI/CD pipelines
-│   ├── deploy.yml           # Auto apply on push
-│   └── destroy.yml          # Manual destroy workflow
-├── modules/                 # Terraform modules
-│   ├── vpc/
-│   ├── ec2/
-│   └── alb/
+├── .github/workflows/ # CI/CD pipelines
+│ ├── deploy.yml # Auto apply on push
+│ └── destroy.yml # Manual destroy workflow
+├── modules/ # Terraform modules
+│ ├── vpc/
+│ ├── ec2/
+│ └── alb/
 ├── ansible/
-│   ├── inventory.ini
-│   └── nginx_setup.yml      # Installs Nginx + deploys HTML
+│ ├── inventory.ini
+│ └── nginx_setup.yml # Installs Nginx + deploys HTML
 ├── main.tf
 ├── variables.tf
 ├── outputs.tf
